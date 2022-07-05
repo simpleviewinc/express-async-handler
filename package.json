@@ -22,6 +22,7 @@
 	],
 	"scripts": {
 		"build": "tsc",
+		"conditional-publish": "./scripts/conditional-publish",
 		"docker": "./scripts/build && ./scripts/run || true",
 		"test": "ts-mocha --paths 'src/**/*.test.ts'",
 		"test:types": "tsc --noEmit"
