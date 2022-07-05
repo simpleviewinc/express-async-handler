@@ -26,7 +26,8 @@
 		"conditional-publish": "./scripts/conditional-publish",
 		"docker": "./scripts/build && ./scripts/run || true",
 		"test": "ts-mocha --paths 'src/**/*.test.ts'",
-		"test:types": "tsc --noEmit"
+		"test:types": "tsc --noEmit",
+		"sync-state": "./scripts/sync-state"
 	},
 	"author": "owenallenaz@gmail.com",
 	"license": "ISC"
