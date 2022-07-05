@@ -3,6 +3,7 @@ import { expectTypeOf } from "expect-type";
 
 import asyncWrap from "../asyncWrap";
 import asyncErrWrap from "../asyncErrWrap";
+import { AsyncRequestHandler } from "../types";
 
 type CustomLocals = {
 	foo?: string
@@ -30,10 +31,18 @@ type ResponseBase = Response & {
 	custom?: boolean
 }
 
+type RequestBaseWithQuery<Query> = Omit<Request, "query"> & {
+	app: MyApp
+	query: Query
+}
+
 
 const customWrapRequest = asyncWrap<RequestBase>;
 const customWrapBoth = asyncWrap<RequestBase, ResponseBase>;
 const customErrWrapBoth = asyncErrWrap<RequestBase, ResponseBase>;
+function customWrapWithQuery<T = Request["query"]>(fn: AsyncRequestHandler<RequestBaseWithQuery<T>, Response>) {
+	return asyncWrap(fn);
+}
 
 describe(__filename, function() {
 	it("should properly type req, res, next", function() {
@@ -79,6 +88,17 @@ describe(__filename, function() {
 			expectTypeOf(req.session).toEqualTypeOf<MySession | undefined>();
 			expectTypeOf(res).toEqualTypeOf<ResponseBase>();
 			expectTypeOf(res.app).toEqualTypeOf<MyApp>();
+			expectTypeOf(next).toEqualTypeOf<NextFunction>();
+		}));
+	});
+
+	it("should work with query overwritten at runtime", function() {
+		const app = express();
+
+		app.get("/async/", customWrapWithQuery<{ foo: string }>(async function(req, res, next) {
+			expectTypeOf(req).toEqualTypeOf<RequestBaseWithQuery<{ foo: string }>>();
+			expectTypeOf(req.query).toEqualTypeOf<{ foo: string }>();
+			expectTypeOf(res).toEqualTypeOf<Response>();
 			expectTypeOf(next).toEqualTypeOf<NextFunction>();
 		}));
 	});
