@@ -1,0 +1,9 @@
+#!/bin/bash
+docker run --rm -it \
+	-v $PWD/src:/app/src \
+	-v $PWD/testing:/app/testing \
+	-v $PWD/dist:/app/dist \
+	-v $PWD/types:/app/types \
+	-v $PWD/package.json:/app/package.json \
+	-v $PWD/tsconfig.json:/app/tsconfig.json \
+	express-async-handler:local /bin/bash
