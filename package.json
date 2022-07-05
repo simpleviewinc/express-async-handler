@@ -1,6 +1,6 @@
 {
 	"name": "@simpleview/express-async-handler",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "TypeScript compliant express route handler",
 	"main": "dist/index.js",
 	"types": "types/index.d.ts",
